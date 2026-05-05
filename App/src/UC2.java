@@ -1,4 +1,3 @@
-package com.apps.quantitymeasurement;
 
 /**
  * UC2 - Feet and Inches measurement equality
