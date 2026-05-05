@@ -1,11 +1,9 @@
+package com.apps.quantitymeasurement;
+
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.apps.quantitymeasurement.UC1.Feet;
-
-/**
- * UC1Test - Unit Test Class for Feet Measurement Equality
- */
 
 public class UC1Test {
 
