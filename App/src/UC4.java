@@ -1,8 +1,10 @@
-public class UC3 {
+public class UC4 {
 
     public enum LengthUnit {
         FEET(12.0),
-        INCHES(1.0);
+        INCHES(1.0),
+        YARDS(36.0),
+        CENTIMETERS(0.393701);
 
         private final double conversionFactor;
 
@@ -27,21 +29,24 @@ public class UC3 {
             this.unit = unit;
         }
 
+        // Convert to inches
         private double convertToBaseUnit() {
             return value * unit.getConversionFactor();
         }
 
-        public boolean compare(Length thatLength) {
-            return Double.compare(
-                    this.convertToBaseUnit(),
-                    thatLength.convertToBaseUnit()
-            ) == 0;
+        // FIXED: tolerance-based comparison
+        public boolean compare(Length that) {
+            double diff = Math.abs(
+                    this.convertToBaseUnit() - that.convertToBaseUnit()
+            );
+            return diff < 0.0001;
         }
 
         @Override
         public boolean equals(Object obj) {
             if (this == obj) return true;
             if (obj == null || getClass() != obj.getClass()) return false;
+
             Length other = (Length) obj;
             return this.compare(other);
         }
@@ -52,10 +57,26 @@ public class UC3 {
         }
     }
 
-    public static void main(String[] args) {
-        Length feet = new Length(1.0, LengthUnit.FEET);
-        Length inches = new Length(12.0, LengthUnit.INCHES);
+    public static boolean demonstrateLengthComparison(
+            double v1, LengthUnit u1,
+            double v2, LengthUnit u2) {
 
-        System.out.println("Feet = Inches? " + feet.equals(inches));
+        Length l1 = new Length(v1, u1);
+        Length l2 = new Length(v2, u2);
+
+        return l1.equals(l2);
+    }
+    public static void main(String[] args) {
+
+        System.out.println(
+                demonstrateLengthComparison(1.0, LengthUnit.YARDS, 3.0, LengthUnit.FEET)
+        );
+
+        System.out.println(
+                demonstrateLengthComparison(1.0, LengthUnit.YARDS, 36.0, LengthUnit.INCHES)
+        );
+        System.out.println(
+                demonstrateLengthComparison(100.0, LengthUnit.CENTIMETERS, 39.3701, LengthUnit.INCHES)
+        );
     }
 }
